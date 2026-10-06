@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FOEST Tocancipá | Acceso Estudiante</title>
+    <link rel="stylesheet" href="/estudiante/stylesestudiante.css">
+<style>
+.password-wrap{position:relative!important;display:block!important;width:100%!important}
+.password-wrap input{display:block!important;width:100%!important;box-sizing:border-box!important;padding-right:48px!important}
+.panel .password-eye,.password-eye{
+ position:absolute!important;right:8px!important;top:50%!important;transform:translateY(-50%)!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ width:36px!important;height:36px!important;min-width:36px!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:50%!important;
+ background:transparent!important;color:#475569!important;box-shadow:none!important;cursor:pointer!important;z-index:20!important
+}
+.panel .password-eye:hover,.password-eye:hover{background:#e2e8f0!important;color:#202224!important}
+.password-eye svg{width:21px!important;height:21px!important;display:block!important;pointer-events:none!important}
+</style></head>
+
+<body>
+<header><div class="brand"><img src="/images/tocancipa.jpg" alt="Alcaldía de Tocancipá" style="height:80px;object-fit:contain"></div><a class="admin-link" href="/">Volver al Inicio</a></header>
+<main style="max-width:450px;margin:50px auto">
+<div id="banner" class="panel" hidden style="margin-bottom:14px;color:#15803d"></div>
+<section id="loginBox" class="panel"><h2>Iniciar Sesión</h2><p class="muted">Ingresa con tu documento y contraseña.</p>
+<form id="loginForm"><label>Número de Documento<input id="loginDocumento" required></label><label>Contraseña<span class="password-wrap"><input type="password" id="loginPassword" required><button type="button" class="password-eye" data-password-target="loginPassword" aria-label="Mostrar contraseña" title="Mostrar contraseña"><svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none!important"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.1 3.2"/><path d="M6.6 6.6C3.5 8.6 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4-.8"/></svg></button></span></label><div id="loginMsg" style="display:none"></div><button style="width:100%;margin-top:20px">Entrar</button></form>
+<p style="text-align:center"><a href="#" data-show="registro">Crear cuenta</a> · <a href="#" data-show="recuperar">Olvidé mi contraseña</a></p></section>
+
+<section id="registroBox" class="panel" hidden><h2>Registro de Estudiante</h2><p class="muted">Después de registrarte recibirás un correo. Abre el enlace para confirmar tu cuenta.</p>
+<form id="registroForm"><label>Nombres y Apellidos<input id="regNombre" required></label><label>Número de Documento<input id="regDocumento" required></label><label>Correo Electrónico<input type="email" id="regCorreo" required></label><label>Contraseña<span class="password-wrap"><input type="password" id="regPassword" minlength="8" required><button type="button" class="password-eye" data-password-target="regPassword" aria-label="Mostrar contraseña" title="Mostrar contraseña"><svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none!important"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.1 3.2"/><path d="M6.6 6.6C3.5 8.6 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4-.8"/></svg></button></span></label><small class="muted">Mínimo 8 caracteres.</small><div id="regMsg"></div><button style="width:100%;margin-top:20px">Crear cuenta</button></form>
+<div id="reenviarBox" hidden style="margin-top:14px;text-align:center"><button type="button" id="reenviarCorreo">Reenviar correo de confirmación</button></div>
+<p style="text-align:center"><a href="#" data-show="login">Volver al inicio de sesión</a></p></section>
+
+<section id="recuperarBox" class="panel" hidden><h2>Recuperar contraseña</h2><p class="muted">Ingresa el correo asociado a tu cuenta. Te enviaremos un enlace para crear una contraseña nueva.</p>
+<form id="recuperarForm"><label>Correo Electrónico<input type="email" id="recCorreo" required></label><div id="recMsg"></div><button style="width:100%;margin-top:20px">Enviar enlace de recuperación</button></form><p style="text-align:center"><a href="#" data-show="login">Volver al inicio de sesión</a></p></section>
+</main>
+<script>
+let correoRegistro="";
+const boxes={login:document.getElementById("loginBox"),registro:document.getElementById("registroBox"),recuperar:document.getElementById("recuperarBox")};
+function mostrar(n){Object.values(boxes).forEach(x=>x.hidden=true);boxes[n].hidden=false}
+document.querySelectorAll("[data-show]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();mostrar(a.dataset.show)}));
+function msg(id,text,ok=false){const e=document.getElementById(id);e.textContent=text;e.style.display="block";e.style.color=ok?"#15803d":"#b91c1c"}
+if(new URLSearchParams(location.search).get("confirmado")==="1"){banner.hidden=false;banner.textContent="Correo confirmado. Ya puedes iniciar sesión."}
+document.getElementById("registroForm").addEventListener("submit",async e=>{e.preventDefault();correoRegistro=regCorreo.value.trim().toLowerCase();const r=await fetch("/api/auth/registro",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({nombre:regNombre.value.trim(),documento:regDocumento.value.trim(),correo:correoRegistro,password:regPassword.value})});const d=await r.json();if(!r.ok)return msg("regMsg",d.error||"No fue posible registrarse.");msg("regMsg",d.mensaje,true);reenviarBox.hidden=false});
+document.getElementById("reenviarCorreo").addEventListener("click",async()=>{const r=await fetch("/api/auth/reenviar-confirmacion",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({correo:correoRegistro||regCorreo.value.trim()})});const d=await r.json();msg("regMsg",d.mensaje||d.error,r.ok)});
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();const r=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({documento:loginDocumento.value.trim(),password:loginPassword.value})});const d=await r.json();if(!r.ok)return msg("loginMsg",d.error||"Credenciales incorrectas.");localStorage.setItem("estudianteToken",d.token);localStorage.setItem("estudianteRefreshToken",d.refreshToken||"");localStorage.setItem("estudianteData",JSON.stringify(d.usuario));location.href="/estudiante/index.html"});
+document.getElementById("recuperarForm").addEventListener("submit",async e=>{e.preventDefault();const r=await fetch("/api/auth/recuperar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({correo:recCorreo.value.trim().toLowerCase()})});const d=await r.json();msg("recMsg",d.mensaje||"Si el correo está registrado, recibirás un enlace.",true)});
+</script><script>
+document.querySelectorAll("[data-password-target]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const input=document.getElementById(btn.dataset.passwordTarget);
+    if(!input)return;
+    const mostrar=input.type==="password";
+    input.type=mostrar?"text":"password";
+    const open=btn.querySelector(".eye-open"), off=btn.querySelector(".eye-off");
+    if(open) open.style.setProperty("display",mostrar?"none":"block","important");
+    if(off) off.style.setProperty("display",mostrar?"block":"none","important");
+    btn.setAttribute("aria-label",mostrar?"Ocultar contraseña":"Mostrar contraseña");
+    btn.title=mostrar?"Ocultar contraseña":"Mostrar contraseña";
+  });
+});
+</script></body></html>

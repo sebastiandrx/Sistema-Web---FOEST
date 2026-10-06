@@ -1,0 +1,271 @@
+<!doctype html>
+
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Agrega esto en el <head> de tu public/admin/index.html -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>FOEST | Panel Administrativo</title>
+  <link rel="stylesheet" href="/admin/stylesadmin.css">
+</head>
+
+<body>
+  <!-- SECCIÓN DE LOGIN (Cubre toda la pantalla de forma absoluta) -->
+  <section id="loginSection" class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo" style="background: none; border: none; padding: 0;">
+          <img src="/images/Foest1.png" alt="Escudo Tocancipá"
+            style="width: 70px; height: 70px; object-fit: contain; margin: 0 auto 0px;">
+        </div>
+        <br>
+        <h2>Panel Administrativo</h2>
+        <p class="login-subtitle">Fondo para el Fomento de la Educación Superior</p>
+        <div style="text-align: center; margin-top: 15px;">
+          <a href="/estudiante/index.html"
+            style="color: #64748b; text-decoration: none; font-size: 14px; font-weight: 500;">← Volver al portal
+            principal</a>
+        </div>
+      </div>
+
+      <form id="formLogin" onsubmit="iniciarSesion(event)">
+        <label>Correo institucional
+          <input type="email" id="usuario" placeholder="funcionario@tocancipa.gov.co" required autocomplete="username">
+        </label>
+
+        <label>Contraseña
+          <div class="password-container">
+            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" id="togglePassword" onclick="togglePasswordVisibility()"
+              title="Mostrar/Ocultar contraseña">
+              👁️
+            </button>
+          </div>
+        </label>
+
+        <div id="loginError" class="error" style="display: none; margin-top: 15px;"></div>
+
+        <button type="submit" class="btn-login">Ingresar al Sistema</button>
+      </form>
+    </div>
+
+  </section>
+
+  <!-- CONTENEDOR TOTAL DEL PANEL DE ADMINISTRACIÓN (Oculto por defecto al cargar) -->
+
+  <div id="adminAppContainer" class="hidden" style="display: none; height: 100vh; width: 100vw;">
+    <aside>
+      <div class="logo">
+        <img src="/images/Foest1.png" alt="Logo Tocancipá" style="width: 36px; height: 36px; object-fit: contain;">
+        <div><b>FOEST</b><small>ADMINISTRACIÓN</small></div>
+      </div>
+      <nav>
+        <a class="active" href="#dashboard">Dashboard</a>
+        <a href="#postulaciones">Postulaciones</a>
+        <a href="#documentos">Revisión documental</a>
+        <a href="#estudiantes">Estudiantes</a>
+        <a href="#reportes" data-permiso="VER_REPORTES">Reportes</a>
+        <a href="#funcionarios" id="navFuncionarios" data-permiso="GESTIONAR_FUNCIONARIOS">Funcionarios</a>
+        <a href="#micuenta">Mi cuenta</a>
+      </nav>
+      <a class="student" href="/">← Portal estudiante</a>
+    </aside>
+
+    <main><div id="adminMessage" class="admin-message" style="display:none"></div>
+      <header>
+        <div>
+          <span class="eyebrow">FOEST · Tocancipá</span>
+          <h1>Panel administrativo</h1>
+        </div>
+        <div class="user" style="display: flex; gap: 10px; align-items: center;">
+          👤 <span id="funcionarioActual">Funcionario FOEST</span>
+          <button onclick="cerrarSesion()"
+            style="background: #d62828; padding: 6px 12px; font-size: 12px; border: none; color: #fff; border-radius: 4px; cursor: pointer;">Cerrar
+            sesión</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="view">
+        <div class="cards">
+          <div class="card"><small>Total postulaciones</small><strong id="total">0</strong></div>
+          <div class="card yellow"><small>Pendientes / revisión</small><strong id="pendientes">0</strong></div>
+          <div class="card"><small>En revisión</small><strong id="enRevision">0</strong></div>
+          <div class="card"><small>Subsanación</small><strong id="subsanacion">0</strong></div>
+          <div class="card green"><small>Aprobadas</small><strong id="aprobadas">0</strong></div>
+          <div class="card red"><small>No aprobadas</small><strong id="noAprobadas">0</strong></div>
+        </div>
+        <div class="panel">
+          <div class="section-title">
+            <div>
+              <h2>Postulaciones recientes</h2>
+              <p>Las solicitudes enviadas desde el portal aparecen aquí automáticamente.</p>
+            </div>
+            <button onclick="cargar()">Actualizar</button>
+          </div>
+          <div id="tablaDashboard"></div>
+        </div>
+      </section>
+
+      <section id="postulaciones" class="view hidden">
+        <div class="panel">
+          <div class="section-title">
+            <div>
+              <h2>Postulaciones</h2>
+              <p>Consulta y gestiona las solicitudes recibidas.</p>
+            </div>
+          </div>
+          <div class="filters">
+            <input id="busqueda" oninput="renderPostulaciones()" placeholder="Buscar nombre, documento, radicado...">
+            <select id="filtroTipo" onchange="renderPostulaciones()"><option value="">Todos los tipos</option><option>PRIMERA VEZ</option><option>RENOVACIÓN</option><option>REINTEGRO</option></select>
+            <select id="filtroEstado" onchange="renderPostulaciones()"><option value="">Todos los estados</option><option>PENDIENTE</option><option>EN REVISIÓN</option><option>SUBSANACIÓN</option><option>APROBADO</option><option>NO APROBADO</option></select>
+            <select id="filtroBeneficio" onchange="renderPostulaciones()"><option value="">Todos los beneficios</option><option value="LINEA_1">Línea 1</option><option value="LINEA_2">Línea 2</option><option value="LINEA_3">Línea 3</option><option value="LINEA_4">Línea 4</option><option value="LINEA_5">Línea 5</option><option value="LINEA_6">Línea 6</option><option value="S11">Saber 11</option><option value="EA">Excelencia académica</option><option value="DEP">Deportista</option><option value="CUL">Cultura</option><option value="SUP">Superación</option><option value="ST">Transporte</option><option value="AS">Sostenimiento</option><option value="AM">Movilidad</option><option value="AI">Investigación</option></select>
+            <select id="filtroPostUniversidad" onchange="renderPostulaciones()"><option value="">Todas las universidades</option></select>
+            <button class="secondary" onclick="limpiarFiltros()">Limpiar</button>
+          </div>
+          <div id="tablaPostulaciones"></div>
+        </div>
+      </section>
+
+      <section id="documentos" class="view hidden">
+        <div class="panel">
+          <h2>Revisión documental</h2>
+          <p>Selecciona una postulación para revisar sus documentos.</p>
+          <div id="revision"></div>
+
+
+
+          <!-- Contenedor del visor in-line de documentos -->
+          <div id="visorContainer"
+            style="display: none; margin-top: 30px; padding: 20px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="margin: 0; color: var(--azul-oscuro, #0d3b66);">Previsualización del archivo</h3>
+              <button type="button" onclick="document.getElementById('visorContainer').style.display='none'"
+                style="background: #d62828; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Cerrar
+                visor</button>
+            </div>
+            <div style="width: 100%; height: 600px; border: 1px solid #dcdfe3; border-radius: 8px; overflow: hidden;">
+              <iframe id="iframeViewer" src="" style="width: 100%; height: 100%; border: none;"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="estudiantes" class="view hidden">
+        <div class="panel">
+          <div class="section-title">
+            <div>
+              <h2>Estudiantes Registrados</h2>
+              <p class="muted">Listado consolidado de aspirantes en el sistema.</p>
+            </div>
+            <div>
+              <select id="filtroUniversidad" onchange="filtrarEstudiantesPorUniversidad()"
+                style="padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background: #fff;">
+                <option value="">Todas las universidades</option>
+              </select>
+            </div>
+          </div>
+          <div id="tablaEstudiantes" style="margin-top: 20px;"></div>
+        </div>
+      </section>
+
+
+      <section id="funcionarios" class="view hidden">
+        <div class="panel funcionarios-panel">
+          <div class="section-title funcionarios-header">
+            <div>
+              <span class="section-kicker">ADMINISTRACIÓN DE ACCESOS</span>
+              <h2>Funcionarios y permisos</h2>
+              <p>Gestiona las cuentas del equipo FOEST y define qué acciones puede realizar cada funcionario.</p>
+            </div>
+            <button class="btn-primary-icon" onclick="mostrarCrearFuncionario()"><span>+</span> Crear funcionario</button>
+          </div>
+
+          <div id="formFuncionario" class="funcionario-form" style="display:none">
+            <div class="form-title-row">
+              <div>
+                <h3>Nuevo funcionario</h3>
+                <p>Registra los datos básicos y selecciona sus permisos de acceso.</p>
+              </div>
+            </div>
+            <div class="funcionario-fields">
+              <label class="field-modern"><span>Nombre completo</span><input id="funNombre" placeholder="Ej. María Fernanda López"></label>
+              <label class="field-modern"><span>Correo institucional</span><input type="email" id="funCorreo" placeholder="funcionario@tocancipa.gov.co"></label>
+              <label class="field-modern"><span>Cargo</span><input id="funCargo" placeholder="Ej. Profesional FOEST"></label>
+            </div>
+            <div class="permissions-block">
+              <div class="permissions-heading"><strong>Permisos de acceso</strong><span>Selecciona únicamente las funciones que necesita este usuario.</span></div>
+              <div id="listaPermisos" class="permission-grid permission-grid-modern"></div>
+            </div>
+            <div class="form-actions">
+              <button onclick="crearFuncionario()">Crear cuenta</button>
+              <button class="secondary" onclick="document.getElementById('formFuncionario').style.display='none'">Cancelar</button>
+            </div>
+          </div>
+
+          <div id="passwordTemporal" class="admin-message" style="display:none"></div>
+          <div class="funcionarios-list-head">
+            <div><h3>Equipo FOEST</h3><p>Cuentas administrativas registradas en el sistema.</p></div>
+          </div>
+          <div id="tablaFuncionarios"></div>
+        </div>
+      </section>
+
+      <section id="micuenta" class="view hidden">
+        <div class="account-shell">
+          <div class="account-card">
+            <div class="account-card-header">
+              <div class="account-lock" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/></svg>
+              </div>
+              <div><span class="section-kicker">SEGURIDAD</span><h2>Mi cuenta</h2><p>Actualiza la contraseña utilizada para acceder al panel administrativo FOEST.</p></div>
+            </div>
+            <div class="account-form">
+              <div class="account-password-grid">
+                <label class="field-modern"><span>Nueva contraseña</span>
+                  <div class="admin-password-wrap"><input type="password" id="miPassword" minlength="8" placeholder="Mínimo 8 caracteres"><button type="button" class="admin-eye" onclick="toggleAdminPassword('miPassword',this)" aria-label="Mostrar contraseña">👁</button></div>
+                </label>
+                <label class="field-modern"><span>Confirmar contraseña</span>
+                  <div class="admin-password-wrap"><input type="password" id="miPassword2" minlength="8" placeholder="Repite la nueva contraseña"><button type="button" class="admin-eye" onclick="toggleAdminPassword('miPassword2',this)" aria-label="Mostrar contraseña">👁</button></div>
+                </label>
+              </div>
+              <div class="password-guidance"><span>🔒</span><div><strong>Recomendación de seguridad</strong><p>Utiliza una contraseña que no emplees en otros servicios y evita compartirla con otros funcionarios.</p></div></div>
+              <div class="account-actions"><button onclick="cambiarMiPassword()">Actualizar contraseña</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reportes" class="view hidden">
+        <h2>Reportes y Analítica</h2>
+        <p class="muted">Visualización gráfica del comportamiento de las postulaciones.</p>
+        <div style="margin: 16px 0 22px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button id="btnExportarExcel" onclick="exportarExcelCompleto()" style="background:#16834a;color:white;border:none;border-radius:8px;padding:11px 18px;font-weight:700;cursor:pointer;">📊 Exportar a Excel</button>
+          <span class="muted" style="font-size:13px;">Genera un archivo completo y normalizado con postulaciones, beneficios, documentos e historial.</span>
+        </div>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 20px;">
+          <div class="panel"
+            style="box-shadow: none; border: 1px solid #e2e8f0; margin: 0; background: #fff; padding: 20px; border-radius: 12px;">
+            <h3 style="font-size: 16px; color: #0d3b66; margin-bottom: 15px;">Postulaciones por Beneficio</h3>
+            <canvas id="graficoBeneficios"></canvas>
+          </div>
+
+          <div class="panel"
+            style="box-shadow: none; border: 1px solid #e2e8f0; margin: 0; background: #fff; padding: 20px; border-radius: 12px;">
+            <h3 style="font-size: 16px; color: #0d3b66; margin-bottom: 15px;">Estudiantes por Universidad</h3>
+            <canvas id="graficoUniversidades"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="/admin/app.js"></script>
+
+</body>
+
+</html>

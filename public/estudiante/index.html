@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FOEST Tocancipá | Portal Estudiante</title>
+  <link rel="stylesheet" href="/estudiante/stylesestudiante.css">
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <img src="/images/tocancipa.jpg" alt="Alcaldía de Tocancipá"
+        style="height: 80px; width: auto; object-fit: contain;">
+    </div>
+
+    <div class="header-right">
+      <a class="admin-link" href="/admin">Acceso administrativo</a>
+
+      <div id="menuUsuario" style="display: none;">
+        <span id="saludoEstudiante"></span>
+        <button onclick="cerrarSesionEstudiante()" class="btn-cerrar">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="menuUsuario" style="display: none;">
+    <span id="saludoEstudiante"></span>
+    <button onclick="cerrarSesionEstudiante()" class="btn-cerrar">Cerrar Sesión</button>
+  </div>
+  </div>
+  </header>
+
+  <main>
+    <section class="hero-moderno">
+      <div class="hero-text">
+        <span class="eyebrow">Fondo para el Fomento de la Educación Superior</span>
+        <h1>Tu postulación a FOEST, ahora más fácil.</h1>
+        <p>Realiza tu solicitud en línea, carga tus documentos y consulta el estado de tu proceso sin desplazarte a la
+          Alcaldía.</p>
+        <button type="button" class="btn-main" onclick="verificarSesionYPostular()">Iniciar postulación</button>
+      </div>
+
+      <div class="hero-image-card">
+        <!-- Guarda tu imagen del cuadro de productos en public/images/ -->
+        <img src="/images/Foest.png" alt="Beneficios Económicos FOEST"
+          style="width: 100%; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);">
+      </div>
+    </section>
+
+    <section id="formulario" class="panel" style="display: none;">
+      <h2>Nueva postulación</h2>
+      <p class="muted">Demo funcional: la información se guarda en el mismo sistema que consulta el administrador.</p>
+      <form id="postulacionForm" enctype="multipart/form-data">
+        <div class="grid">
+          <label>Tipo de postulación<select name="tipoPostulacion" required>
+              <option>PRIMERA VEZ</option>
+              <option>RENOVACIÓN</option>
+              <option>REINTEGRO</option>
+            </select></label>
+          <label>Número de documento<input name="documento" required></label>
+          <label>Nombres y apellidos<input name="nombre" required></label>
+          <label>Correo electrónico<input type="email" name="correo" required></label>
+          <label>Teléfono<input name="telefono"></label>
+          <label>Dirección<input name="direccion"></label>
+          <label>Universidad<div class="universidad-buscador" id="universidadBuscador">
+  <div class="universidad-search-wrap">
+    <span class="universidad-lupa" aria-hidden="true">⌕</span>
+    <input type="text" id="universidadBusqueda" placeholder="Buscar universidad" autocomplete="off"
+      aria-label="Buscar universidad" aria-expanded="false" aria-controls="universidadOpciones">
+  </div>
+  <input type="hidden" id="universidad" name="universidad" required>
+  <div id="universidadOpciones" class="universidad-opciones" role="listbox" hidden></div>
+  <small id="universidadSeleccionada" class="universidad-seleccionada">Selecciona una universidad de la lista.</small>
+</div></label>
+          <label>Programa académico<input name="carrera" required></label>
+          <label>Nivel académico
+            <select name="nivelAcademico" id="nivelAcademico" required>
+              <option value="">Seleccione</option>
+              <option value="PREGRADO">Pregrado</option>
+              <option value="POSGRADO">Posgrado</option>
+            </select>
+          </label>
+          <label>Semestre / periodo<input name="semestre" placeholder="Ej. 5"></label>
+        </div>
+
+        <h3>Beneficios o apoyos solicitados</h3>
+        <p class="muted">Seleccione los beneficios o apoyos a los que desea postularse. Si selecciona Incentivos a la formación, debe escoger una sola línea estratégica.</p>
+
+        <div class="benefit-section">
+          <div class="benefit-section-title">A. Incentivos a la formación</div>
+          <label class="benefit-main"><input type="checkbox" id="beneficioFormacion" name="beneficio_categoria" value="FORMACION"> Incentivos a la formación</label>
+          <div id="lineasFormacion" class="benefit-suboptions" style="display:none;">
+            <p class="muted small">Seleccione la línea estratégica correspondiente:</p>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_1"> Línea Estratégica No. 1 - Auxilio 100% por convenio</label>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_2"> Línea Estratégica No. 2 - Pacto entre tres</label>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_3"> Línea Estratégica No. 3 - Pacto entre cuatro</label>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_4"> Línea Estratégica No. 4 - Pacto especial</label>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_5"> Línea Estratégica No. 5 - Igualdad Asertiva</label>
+            <label><input type="radio" name="lineaFormacion" value="LINEA_6"> Línea Estratégica No. 6 - Posgrados</label>
+          </div>
+        </div>
+
+        <div class="benefit-section">
+          <div class="benefit-section-title">B. Incentivos especiales</div>
+          <div class="benefit-grid">
+            <label><input type="checkbox" name="beneficios" value="S11"> Incentivo a los mejores puntajes Pruebas ICFES - Saber 11 (S11)</label>
+            <label><input type="checkbox" name="beneficios" value="EA"> Incentivo a la Excelencia Académica (EA)</label>
+            <label><input type="checkbox" name="beneficios" value="DEP"> Incentivo al Mejor Deportista (DEP)</label>
+            <label><input type="checkbox" name="beneficios" value="CUL"> Incentivo a la Cultura (CUL)</label>
+            <label><input type="checkbox" name="beneficios" value="SUP"> Incentivo a la Superación (SUP)</label>
+          </div>
+        </div>
+
+        <div class="benefit-section">
+          <div class="benefit-section-title">C. Otros subsidios y/o apoyos</div>
+          <div class="benefit-grid">
+            <label><input type="checkbox" name="beneficios" value="ST"> Subsidio de Transporte (ST)</label>
+            <label><input type="checkbox" name="beneficios" value="AS"> Apoyo de Sostenimiento (AS)</label>
+            <label><input type="checkbox" name="beneficios" value="AM"> Apoyo a la Movilidad Nacional e Internacional (AM)</label>
+            <label><input type="checkbox" name="beneficios" value="AI"> Apoyo a la Investigación (AI)</label>
+          </div>
+        </div>
+
+        <div id="reintegrationOptions" class="conditional-box" style="display:none;">
+          <h3>Condición del reintegro</h3>
+          <p class="muted">Esta información permite determinar los requisitos de transición aplicables.</p>
+          <label>Situación del reintegro
+            <select name="condicionReintegro" id="condicionReintegro">
+              <option value="">Seleccione una opción</option>
+              <option value="ACUERDO_12_2016">Beneficiario del Acuerdo Municipal No. 12 de 2016 (activo entre 2017-1 y 2023-2)</option>
+              <option value="ACUERDO_02_2023">Beneficiario del Acuerdo Municipal No. 02 de 2023 (activo entre 2024-1 y 2025-2)</option>
+              <option value="CAMBIO_PROGRAMA_POSGRADO">Cambio de programa académico o paso de pregrado a posgrado</option>
+              <option value="OTRA">Otra situación de reintegro</option>
+            </select>
+            <small class="muted">Seleccione la situación que corresponda. Para reintegro, esta selección es obligatoria.</small>
+          </label>
+        </div>
+
+        <div id="documentosRequeridos" class="documents-section">
+          <h3>Documentos requeridos</h3>
+          <p class="muted">Los documentos se generan automáticamente según el tipo de postulación y los beneficios seleccionados.</p>
+          <div id="listaDocumentosRequeridos"></div>
+        </div>
+
+        <p class="muted">Formatos permitidos: PDF, JPG, PNG. Máximo 10 MB por archivo.</p>
+        <div id="advertenciaBeneficios" class="warning-box" style="display:none;"></div>
+        <br>
+
+        <button type="submit">Radicar postulación</button>
+        <div id="resultado"></div>
+      </form>
+    </section>
+
+    <section class="panel" id="seccionHistorial" style="display: none;">
+      <h2>Mis Postulaciones e Historial</h2>
+      <p class="muted">Consulta y filtra el estado actual de tus solicitudes radicadas.</p>
+
+      <!-- Controles de Filtro -->
+      <div class="grid" style="margin-bottom: 20px; align-items: flex-end;">
+        <label>Filtrar por Beneficio
+          <select id="filtroBeneficio" onchange="filtrarHistorial()">
+            <option value="">Todos los beneficios</option>
+            <option value="S11">Mejor puntaje ICFES - Saber 11</option>
+            <option value="EA">Excelencia académica</option>
+            <option value="DEP">Mejor deportista</option>
+            <option value="CUL">Cultura</option>
+            <option value="SUP">Superación</option>
+            <option value="ST">Subsidio de transporte</option>
+            <option value="AS">Apoyo de sostenimiento</option>
+            <option value="AM">Apoyo a la movilidad nacional e internacional</option>
+            <option value="AI">Apoyo a la investigación</option>
+          </select>
+        </label>
+        <label>Filtrar por Fecha
+          <input type="date" id="filtroFecha" onchange="filtrarHistorial()">
+        </label>
+        <div>
+          <button type="button" onclick="limpiarFiltros()" style="margin-top: 0; background: #64748b;">Limpiar
+            filtros</button>
+        </div>
+      </div>
+
+      <div id="listaMisPostulaciones">
+        <!-- Aquí se inyectarán dinámicamente las postulaciones del estudiante -->
+      </div>
+    </section>
+
+    <section class="consulta panel">
+      <h2>Consultar una postulación</h2>
+      <div class="lookup"><input id="consultaId" placeholder="Ej. FOEST-123456789"><button
+          onclick="consultar()">Consultar</button></div>
+      <div id="consultaResultado"></div>
+    </section>
+  </main>
+  <script src="/estudiante/app.js"></script>
+</body>
+
+</html>

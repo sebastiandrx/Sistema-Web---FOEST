@@ -1,0 +1,17 @@
+{
+  "name": "foest-sistema-demo",
+  "version": "1.0.0",
+  "description": "Demo FOEST Tocancipá - portal estudiante y panel administrativo conectados",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0"
+  }
+}

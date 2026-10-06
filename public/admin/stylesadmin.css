@@ -1,0 +1,557 @@
+* {
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   FUENTES INSTITUCIONALES (Basado en el Manual de Marca)
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Montserrat:wght@400;500;700;800;900&display=swap');
+
+/* =========================================================
+   VARIABLES INSTITUCIONALES
+========================================================= */
+:root {
+    /* Verdes PANTONE 355 C / 356 C */
+    --verde-tocancipa: #389846;
+    --verde-hover: #35773D;
+    
+    /* Azules PANTONE 307 C / 7689 C */
+    --azul-oscuro: #0071AD;
+    --azul-secundario: #548CBE;
+
+    /* Amarillos PANTONE 116 C / 109 C */
+    --amarillo-pantone: #F2C90F;
+    --amarillo-brillante: #F3D000;
+
+    /* Oscuros PANTONE 426 C / 419 C */
+    --oscuro-426: #202224;
+    --oscuro-419: #222322;
+
+    /* Tono Cálido PANTONE 7412 C */
+    --rojo-alerta: #BA7938;
+
+    --gris-borde: #e2e8e4;
+
+    /* Definición de Tipografías Institucionales */
+    --font-logo: "LEMON MILK", "LEMON MILK PRO FTR", sans-serif;
+    --font-main: "Gotham", "Gotham XNarrow", "Montserrat", Arial, sans-serif;
+    --font-auxiliar: "Kalam", cursive;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    background: #f7f9f8;
+    color: var(--oscuro-419);
+    display: flex;
+}
+
+aside {
+    width: 250px;
+    min-height: 100vh;
+    background: var(--oscuro-419);
+    color: #fff;
+    padding: 25px 18px;
+    position: fixed;
+}
+
+.logo {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 5px 10px 35px;
+}
+
+.logo span {
+    width: 42px;
+    height: 42px;
+    background: var(--verde-tocancipa);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    font-weight: 900;
+    font-family: var(--font-logo);
+}
+
+.logo small {
+    display: block;
+    color: #9baea2;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+nav {
+    display: grid;
+    gap: 7px;
+}
+
+nav a,
+.student {
+    color: #b9c8bf;
+    text-decoration: none;
+    padding: 13px 14px;
+    border-radius: 8px;
+}
+
+nav a:hover,
+nav a.active {
+    background: var(--verde-tocancipa);
+    color: #fff;
+}
+
+.student {
+    display: block;
+    margin-top: 40px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 28px 40px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.eyebrow {
+    color: var(--azul-oscuro);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+h1 {
+    margin: 5px 0;
+    font-size: 32px;
+    font-family: var(--font-logo);
+}
+
+.user {
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(20, 40, 30, 0.07);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card,
+.panel {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 5px 22px rgba(20, 40, 30, 0.07);
+}
+
+.card {
+    border-left: 5px solid var(--azul-oscuro);
+}
+
+.card.yellow {
+    border-color: var(--amarillo-brillante);
+}
+
+.card.green {
+    border-color: var(--verde-tocancipa);
+}
+
+.card.red {
+    border-color: var(--rojo-alerta);
+}
+
+.card small {
+    display: block;
+    color: #6b7280;
+}
+
+.card strong {
+    font-size: 32px;
+    display: block;
+    margin-top: 8px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.section-title p {
+    color: #6b7280;
+}
+
+.section-title input {
+    width: 350px;
+}
+
+.panel h2 {
+    margin-top: 0;
+    font-family: var(--font-logo);
+}
+
+button {
+    border: 0;
+    background: var(--azul-oscuro);
+    color: #fff;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+button.green {
+    background: var(--verde-tocancipa);
+}
+
+button.red {
+    background: var(--rojo-alerta);
+}
+
+.table-wrap {
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 13px;
+    border-bottom: 1px solid #eef1ef;
+    font-size: 14px;
+}
+
+th {
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    background: #edf0f2;
+}
+
+.badge.ok {
+    background: #e3f6eb;
+    color: var(--verde-hover);
+}
+
+.badge.warn {
+    background: #fff9d8;
+    color: #8a7100;
+}
+
+.badge.bad {
+    background: #fae6e4;
+    color: var(--rojo-alerta);
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ==========================================
+   ESTILOS MODERNOS DEL LOGIN (GLOBALES)
+   ========================================== */
+.login-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--verde-tocancipa) 100%);
+    padding: 20px;
+    z-index: 99999;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    border-top: 6px solid var(--verde-tocancipa);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-logo {
+    width: 50px;
+    height: 50px;
+    background: var(--verde-tocancipa);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 24px;
+    font-family: var(--font-logo);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 12px auto;
+    box-shadow: 0 4px 10px rgba(56, 152, 70, 0.3);
+}
+
+.login-card h2 {
+    color: var(--azul-oscuro);
+    font-size: 22px;
+    margin: 0 0 4px 0;
+    font-family: var(--font-logo);
+}
+
+.login-subtitle {
+    color: #6b7280;
+    font-size: 13px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.login-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--azul-oscuro);
+    margin-bottom: 16px;
+}
+
+.login-card input {
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #fdfdfd;
+    font: inherit;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.login-card input:focus {
+    border-color: var(--verde-tocancipa);
+    box-shadow: 0 0 0 3px rgba(56, 152, 70, 0.15);
+    background: #ffffff;
+}
+
+/* Contenedor del campo de contraseña */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    padding-right: 45px;
+}
+
+#togglePassword {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    display: grid;
+    place-items: center;
+    color: #6b7280;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+#togglePassword:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-login {
+    width: 100%;
+    background: var(--verde-tocancipa);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(56, 152, 70, 0.2);
+}
+
+.btn-login:hover {
+    background: var(--verde-hover);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================
+   RESPONSIVIDAD (PANTALLAS PEQUEÑAS)
+   ========================================== */
+@media(max-width:900px) {
+    aside {
+        width: 190px;
+    }
+
+    main {
+        margin-left: 190px;
+        width: calc(100% - 190px);
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.doc {
+    background: #f8faf9;
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.doc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.doc-actions button {
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}/* ===== FASE 6: revisión administrativa ===== */
+.cards{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
+.filters{display:grid;grid-template-columns:2fr repeat(4,minmax(150px,1fr)) auto;gap:10px;margin:18px 0}
+.filters input,.filters select,.decision-box input,.decision-box textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff}
+.secondary{background:#0d3b66!important;color:#fff!important}.orange-btn{background:#d97706!important;color:#fff!important}
+.badge.info{background:#dbeafe;color:#1d4ed8}.badge.orange{background:#ffedd5;color:#c2410c}
+.expediente{max-width:1200px}.exp-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:18px}.exp-head h2{margin:4px 0 8px}
+.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.detail-grid>div{padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px}.detail-grid small{display:block;color:#64748b;margin-bottom:5px}.detail-grid b{word-break:break-word}
+.info-box,.decision-box,.history{padding:18px;border:1px solid #e2e8f0;border-radius:12px;margin:18px 0;background:#fff}.review-summary{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}.review-summary span{padding:8px 12px;background:#f1f5f9;border-radius:999px}
+.doc-info{flex:1}.doc-observation{margin:7px 0 0;color:#b91c1c;font-size:13px}.doc-actions{display:flex;gap:7px;flex-wrap:wrap}.decision-box label{display:block;font-weight:600;margin:12px 0 6px}.inline{display:flex;gap:10px}.decision-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.history-row{display:grid;grid-template-columns:190px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid #eef2f7}.viewer{margin-top:22px;padding:18px;border:1px solid #e2e8f0;border-radius:12px}.viewer-head{display:flex;justify-content:space-between;align-items:center}.viewer iframe{width:100%;height:650px;border:1px solid #e2e8f0;border-radius:8px}
+.admin-message{position:fixed;right:25px;top:20px;z-index:9999;padding:13px 18px;border-radius:9px;background:#dcfce7;color:#166534;box-shadow:0 6px 24px #0002}.admin-message.error{background:#fee2e2;color:#991b1b}.benef-cell{max-width:280px}
+@media(max-width:1000px){.filters{grid-template-columns:1fr 1fr}.detail-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.filters,.detail-grid{grid-template-columns:1fr}.inline{flex-direction:column}.history-row{grid-template-columns:1fr}}
+
+/* Fase 6.5 - calculadora de promedio dentro de revisión documental */
+.calc-promedio-card{margin:14px 0 4px;padding:13px 14px;background:#f8fafc;border:1px solid #dbe3ea;border-radius:10px;max-width:520px}
+.calc-promedio-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.calc-promedio-head strong{display:block;font-size:14px;color:#1f2937}
+.calc-promedio-head small{display:block;margin-top:2px;font-size:11px;color:#64748b}
+.calc-reset,.calc-add,.calc-del{border:0;cursor:pointer;font:inherit}
+.calc-reset{background:transparent;color:#64748b;font-size:12px;padding:5px 7px}
+.calc-filas{display:grid;gap:7px}
+.calc-fila{display:grid;grid-template-columns:minmax(85px,1fr) minmax(85px,1fr) 30px;gap:8px;align-items:end}
+.calc-fila label{font-size:11px;color:#64748b}
+.calc-fila input{display:block;width:100%;box-sizing:border-box;margin-top:3px;padding:7px 8px;border:1px solid #cbd5e1;border-radius:7px;background:#fff;font-size:13px}
+.calc-fila input:focus{outline:2px solid rgba(13,59,102,.15);border-color:#0d3b66}
+.calc-del{height:32px;border-radius:7px;background:#eef2f6;color:#64748b;font-size:18px}
+.calc-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.calc-add{padding:7px 10px;border-radius:7px;background:#e8eef5;color:#0d3b66;font-size:12px;font-weight:700}
+.calc-resultado{font-size:13px;color:#475569}
+.calc-resultado strong{font-size:20px;color:#0d3b66;margin-left:4px}
+@media(max-width:520px){.calc-fila{grid-template-columns:1fr 1fr 30px}.calc-promedio-card{max-width:none}}
+
+.permission-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:14px 0 18px}.perm-item{display:flex!important;align-items:center;gap:8px;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;background:#fff}.perm-item input{width:auto!important;margin:0!important}
+
+
+/* FASE 8.2 — Funcionarios y Mi cuenta (estructura nativa, sin DOM patches) */
+.section-kicker{display:block;margin-bottom:5px;color:#16834a;font-size:10px;font-weight:800;letter-spacing:.09em}
+.funcionarios-panel{padding:24px!important}
+.funcionarios-header{padding-bottom:20px;border-bottom:1px solid #e9eef3}
+.funcionarios-header h2{margin:2px 0 6px}
+.funcionarios-header p{margin:0;color:#64748b;font-size:13px}
+.btn-primary-icon{display:flex!important;align-items:center;gap:7px}
+.btn-primary-icon span{font-size:18px;line-height:1}
+.funcionario-form{margin:22px 0;padding:22px;border:1px solid #dfe6ed;border-radius:12px;background:#fbfcfd}
+.form-title-row h3{margin:0 0 4px;font-size:17px;color:#172033}
+.form-title-row p{margin:0 0 18px;color:#64748b;font-size:12.5px}
+.funcionario-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.field-modern{display:flex!important;flex-direction:column;gap:7px;margin:0!important;color:#475569;font-size:12px;font-weight:700}
+.field-modern input{width:100%!important;height:43px!important;box-sizing:border-box;padding:0 12px!important;border:1px solid #cbd5e1!important;border-radius:8px!important;background:#fff!important;color:#1f2937!important;font:inherit!important;font-weight:400!important;outline:none;box-shadow:none!important}
+.field-modern input::placeholder{color:#a0aaba}
+.field-modern input:focus{border-color:#389846!important;box-shadow:0 0 0 3px rgba(56,152,70,.11)!important}
+.permissions-block{margin-top:21px;padding-top:18px;border-top:1px solid #e6ebf0}
+.permissions-heading{display:flex;align-items:baseline;gap:10px;margin-bottom:11px}
+.permissions-heading strong{font-size:12px;color:#334155}
+.permissions-heading span{font-size:11.5px;color:#94a3b8}
+.permission-grid-modern{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+.permission-grid-modern .perm-item{display:flex!important;align-items:center;gap:9px;min-height:42px;box-sizing:border-box;margin:0!important;padding:9px 11px!important;border:1px solid #e1e7ed!important;border-radius:8px!important;background:#fff!important;color:#334155!important;font-size:12.5px!important;font-weight:500!important;cursor:pointer;transition:.14s}
+.permission-grid-modern .perm-item:hover{border-color:#a9d8b6!important;background:#f7fbf8!important}
+.permission-grid-modern .perm-item:has(input:checked){border-color:#75bd88!important;background:#edf8f0!important;color:#176b38!important}
+.permission-grid-modern input[type=checkbox]{width:16px!important;height:16px!important;margin:0!important;accent-color:#389846}
+.form-actions{display:flex;gap:9px;margin-top:19px;padding-top:17px;border-top:1px solid #e6ebf0}
+.form-actions button{border-radius:7px!important}
+.funcionarios-list-head{display:flex;justify-content:space-between;align-items:end;margin:22px 0 10px}
+.funcionarios-list-head h3{margin:0 0 3px;font-size:15px;color:#172033}
+.funcionarios-list-head p{margin:0;color:#94a3b8;font-size:11.5px}
+#tablaFuncionarios .table-wrap{border:1px solid #e5eaf0;border-radius:10px;overflow:hidden}
+#tablaFuncionarios table{margin:0}
+#tablaFuncionarios th{background:#f8fafc!important;padding:11px 12px!important;color:#64748b!important;font-size:10px!important;letter-spacing:.05em}
+#tablaFuncionarios td{padding:13px 12px!important;border-bottom:1px solid #edf1f5!important;font-size:12.5px}
+#tablaFuncionarios tbody tr:last-child td{border-bottom:0!important}
+#tablaFuncionarios tbody tr:hover td{background:#fbfcfd}
+
+.account-shell{max-width:780px}
+.account-card{overflow:hidden;border:1px solid #e1e7ed;border-radius:14px;background:#fff;box-shadow:0 7px 22px rgba(15,23,42,.055)}
+.account-card-header{display:flex;gap:14px;align-items:center;padding:22px 24px;border-bottom:1px solid #e7ecf1;background:linear-gradient(180deg,#fff 0%,#fbfcfd 100%)}
+.account-lock{display:grid;place-items:center;width:46px;height:46px;flex:0 0 auto;border-radius:11px;background:#edf8f0;color:#278147}
+.account-card-header h2{margin:0 0 4px;font-size:20px}
+.account-card-header p{margin:0;color:#64748b;font-size:12.5px}
+.account-form{padding:24px}
+.account-password-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+.admin-password-wrap{position:relative}
+.admin-password-wrap input{padding-right:44px!important}
+.admin-eye{position:absolute!important;right:7px!important;top:50%!important;transform:translateY(-50%)!important;width:32px!important;height:30px!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:6px!important;background:transparent!important;box-shadow:none!important;color:#64748b!important;display:grid!important;place-items:center!important;cursor:pointer}
+.admin-eye:hover{background:#f1f5f9!important}
+.password-guidance{display:flex;gap:10px;margin-top:16px;padding:12px 13px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc}
+.password-guidance strong{display:block;margin-bottom:2px;color:#475569;font-size:11.5px}
+.password-guidance p{margin:0;color:#64748b;font-size:11px;line-height:1.45}
+.account-actions{display:flex;justify-content:flex-end;margin-top:20px;padding-top:17px;border-top:1px solid #e8edf2}
+.account-actions button{border-radius:7px!important}
+@media(max-width:900px){.funcionario-fields,.permission-grid-modern{grid-template-columns:1fr 1fr!important}}
+@media(max-width:640px){.funcionario-fields,.permission-grid-modern,.account-password-grid{grid-template-columns:1fr!important}.permissions-heading{display:block}.permissions-heading span{display:block;margin-top:3px}}
+
+/* FASE 9.1 — visor documental desplegable por tarjeta */
+.doc-review-card{padding:0!important;overflow:hidden;background:#fff!important}.doc-review-card .doc-row{display:flex;gap:18px;align-items:center;padding:16px}.doc-review-card .doc-info{min-width:0}.doc-review-card .doc-actions{justify-content:flex-end}.doc-view-btn.active-viewer{background:#e7eef5!important;color:#0d3b66!important;box-shadow:inset 0 0 0 1px #b9c9d9}.doc-inline-viewer{border-top:1px solid #dfe6ed;background:#f8fafc;padding:14px 16px 16px}.doc-inline-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:11px}.doc-inline-head strong{display:block;color:#263548;font-size:13px}.doc-inline-head small{display:block;margin-top:2px;color:#718096;font-size:11px}.viewer-close-btn{background:#fff!important;color:#526274!important;border:1px solid #d7e0e8!important;border-radius:7px!important;padding:7px 10px!important;font-size:11px!important;font-weight:700!important}.doc-preview-body{height:560px;border:1px solid #dbe3ea;border-radius:9px;overflow:hidden;background:#eef2f5}.doc-preview-body iframe{display:block;width:100%;height:100%;border:0;background:#fff}@media(max-width:800px){.doc-review-card .doc-row{align-items:flex-start;flex-direction:column}.doc-review-card .doc-actions{justify-content:flex-start}.doc-preview-body{height:480px}}
