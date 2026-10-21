@@ -7,6 +7,8 @@ const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
 const app = express();
+// Render entrega HTTPS a través de un proxy inverso.
+app.set("trust proxy", 1);
 
 const UNIVERSIDADES_PERMITIDAS = new Set(["UNIVERSIDAD LA GRAN COLOMBIA", "POLITÉCNICO GRANCOLOMBIANO", "ESCUELA DE ADMINISTRACIÓN DE NEGOCIOS - EAN", "ESCUELA COLOMBIANA DE INGENIERÍA JULIO GARAVITO", "UNIVERSIDAD NACIONAL ABIERTA Y A DISTANCIA - UNAD", "UNIVERSIDAD SERGIO ARBOLEDA", "FUNDACIÓN DE EDUCACIÓN NUEVA AMÉRICA", "FUNDACIÓN UNIVERSITARIA COLOMBO GERMANA - UNIGERMANA", "INSTITUCIÓN UNIVERSITARIA COLEGIOS DE COLOMBIA - UNICOC", "CORPORACIÓN UNIVERSITARIA TALLER CINCO", "FUNDACIÓN UNIVERSITARIA LOS LIBERTADORES", "UNIVERSIDAD COOPERATIVA DE COLOMBIA", "FUNDACIÓN UNIVERSITARIA AGRARIA DE COLOMBIA", "CORPORACIÓN UNIFICADA NACIONAL DE EDUCACIÓN SUPERIOR - CUN", "UNIVERSIDAD ECCI", "UNIVERSIDAD DE LA SABANA", "UNIVERSIDAD DE CIENCIAS APLICADAS Y AMBIENTALES - UDCA", "CORPORACIÓN UNIVERSITARIA CENDA", "ESCUELA COLOMBIANA DE REHABILITACIÓN"]);
 
@@ -110,7 +112,7 @@ function authClient() {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
   });
 }
-function baseUrl(req){ return `${req.protocol}://${req.get("host")}`; }
+function baseUrl(req){ return `${req.protocol}://${req.get("host")}`; } // req.protocol respeta X-Forwarded-Proto del proxy confiable
 
 app.post("/api/auth/registro", async (req,res)=>{
   try{
@@ -137,8 +139,19 @@ app.post("/api/auth/registro", async (req,res)=>{
     }
     res.status(201).json({ok:true,mensaje:"Cuenta creada. Revisa tu correo y abre el enlace de confirmación para activar tu cuenta."});
   }catch(e){
-    console.error("Registro Auth:",e.message);
-    res.status(400).json({error:"No fue posible crear la cuenta. Verifica los datos o intenta nuevamente."});
+    console.error("Registro Auth:", {mensaje:e.message, codigo:e.code || e.status || "sin_codigo"});
+    const detalle=String(e.message||"").toLowerCase();
+    let mensaje="No fue posible crear la cuenta. Revisa los datos e inténtalo nuevamente.";
+    if(/already registered|already exists|user already|duplicate|unique constraint/.test(detalle)){
+      mensaje="Ya existe una cuenta asociada con ese correo o documento. Intenta iniciar sesión o recuperar la contraseña.";
+    }else if(/rate limit|too many requests|email rate|over_email_send_rate_limit/.test(detalle)){
+      mensaje="Se alcanzó el límite temporal de correos o solicitudes. Intenta nuevamente más tarde.";
+    }else if(/invalid email|email address is invalid/.test(detalle)){
+      mensaje="El correo electrónico no es válido. Revisa la dirección e inténtalo nuevamente.";
+    }else if(/password/.test(detalle)){
+      mensaje="La contraseña no cumple las reglas de seguridad configuradas en Supabase.";
+    }
+    res.status(400).json({error:mensaje});
   }
 });
 
@@ -230,9 +243,10 @@ app.post("/api/auth/recuperar",async(req,res)=>{
   if(!correo) return res.status(400).json({error:"Ingresa el correo registrado."});
   try{
     const auth=authClient();
-    await auth.auth.resetPasswordForEmail(correo,{redirectTo:`${baseUrl(req)}/estudiante/restablecer.html`});
-  }catch(e){}
-  res.json({ok:true,mensaje:"Si el correo está registrado, recibirás un enlace para restablecer la contraseña."});
+    const {error}=await auth.auth.resetPasswordForEmail(correo,{redirectTo:`${baseUrl(req)}/estudiante/restablecer.html`});
+    if(error) console.error("Recuperación Auth:", {mensaje:error.message,codigo:error.code || error.status});
+  }catch(e){ console.error("Recuperación Auth:",e.message); }
+  res.json({ok:true,mensaje:"Si el correo está registrado y el servicio de correo está disponible, recibirás un enlace para restablecer la contraseña."});
 });
 
 app.post("/api/auth/actualizar-password",async(req,res)=>{
