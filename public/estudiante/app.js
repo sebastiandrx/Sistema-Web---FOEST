@@ -334,14 +334,21 @@ if (form) {
 }
 
 async function consultar() {
-  const id = document.getElementById("consultaId").value.trim();
+  const referencia = document.getElementById("consultaId").value.trim();
   const box = document.getElementById("consultaResultado");
-  if (!id) return;
+  if (!referencia) { box.innerHTML = '<div class="error">Ingresa el radicado o ID de la postulación.</div>'; return; }
+  const token = localStorage.getItem("estudianteToken");
+  if (!token) {
+    box.innerHTML = '<div class="error">Para proteger tu información, debes <a href="/estudiante/login.html">iniciar sesión como estudiante</a> antes de consultar.</div>';
+    return;
+  }
   try {
-    const r = await fetch("/api/postulaciones/" + encodeURIComponent(id));
+    const r = await fetch("/api/estudiante/consulta/" + encodeURIComponent(referencia), {
+      headers: { Authorization: "Bearer " + token }
+    });
     const p = await r.json();
-    if (!r.ok) throw new Error(p.error);
-    box.innerHTML = `<div class="success"><b>${escapeHtml(p.nombre)}</b><br>Radicado: ${escapeHtml(p.radicado)}<br>Estado: <b>${escapeHtml(p.estado)}</b><br>Universidad: ${escapeHtml(p.universidad)}<br>Beneficios: ${(p.beneficios || []).map(escapeHtml).join(", ") || "No registrados"}<br><br>Documentos revisados: ${(p.documentos || []).filter(d => d.estado === "APROBADO").length}/${(p.documentos || []).length}</div>`;
+    if (!r.ok) throw new Error(p.error || "No fue posible consultar la postulación.");
+    box.innerHTML = `<div class="success"><b>Radicado: ${escapeHtml(p.radicado)}</b><br>Estado: <b>${escapeHtml(p.estado)}</b><br>Tipo: ${escapeHtml(p.tipo_postulacion || "No disponible")}<br>Fecha: ${p.created_at ? escapeHtml(new Date(p.created_at).toLocaleDateString("es-CO")) : "No disponible"}</div>`;
   } catch (e) { box.innerHTML = `<div class="error">${escapeHtml(e.message)}</div>`; }
 }
 

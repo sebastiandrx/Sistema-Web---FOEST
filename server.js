@@ -282,6 +282,37 @@ app.get("/api/postulaciones", autenticarFuncionario, exigirPermiso("VER_POSTULAC
   res.json(resultado);
 });
 
+// Consulta del estudiante: la sesión y la titularidad se verifican en el servidor.
+// El endpoint administrativo permanece protegido sin cambios.
+app.get("/api/estudiante/consulta/:referencia", async (req, res) => {
+  try {
+    const token = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+    if (!token) return res.status(401).json({ error: "Inicia sesión como estudiante para consultar tu postulación." });
+    const { data: authData, error: authError } = await supabase.auth.getUser(token);
+    const user = authData?.user;
+    if (authError || !user) return res.status(401).json({ error: "Tu sesión venció. Inicia sesión nuevamente." });
+
+    const { data: perfil, error: perfilError } = await supabase.from("usuarios")
+      .select("documento,rol").eq("auth_user_id", user.id).maybeSingle();
+    if (perfilError) throw perfilError;
+    if (!perfil || perfil.rol !== "ESTUDIANTE") return res.status(403).json({ error: "Esta cuenta no corresponde a un estudiante activo." });
+
+    const referencia = String(req.params.referencia || "").trim();
+    if (!/^[a-zA-Z0-9_-]{4,100}$/.test(referencia)) return res.status(400).json({ error: "Ingresa un radicado o ID válido." });
+    // Nunca se consulta una postulación ajena: el documento se toma del perfil autenticado.
+    const { data: postulaciones, error: consultaError } = await supabase.from("postulaciones")
+      .select("id,radicado,estado,tipo_postulacion,created_at")
+      .eq("documento", perfil.documento).or(`id.eq.${referencia},radicado.eq.${referencia}`).limit(1);
+    if (consultaError) throw consultaError;
+    const p = postulaciones?.[0];
+    if (!p) return res.status(404).json({ error: "No encontramos una postulación tuya con esa referencia." });
+    return res.json({ radicado: p.radicado, estado: p.estado, tipo_postulacion: p.tipo_postulacion, created_at: p.created_at });
+  } catch (e) {
+    console.error("Consulta estudiante:", e.message);
+    return res.status(500).json({ error: "No fue posible consultar la postulación. Intenta nuevamente." });
+  }
+});
+
 app.get("/api/postulaciones/:id", autenticarFuncionario, exigirPermiso("VER_POSTULACIONES"), async (req, res) => {
   const pId = req.params.id;
 
